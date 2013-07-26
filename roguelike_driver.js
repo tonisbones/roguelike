@@ -1,9 +1,10 @@
 function draw_pixel(x, y, ctx, size, color, type) {
+	ctx.fillStyle=color;
+	ctx.lineStyle = color;
 	if (type == 0) {
 		ctx.rect(x * size, y * size, size, size);
 		ctx.stroke();
 	} else if (type == 1) {
-		ctx.fillStyle=color;
 		ctx.fillRect(x * size, y * size, size, size);
 	} else {
 		//alert("this is the test");
@@ -24,8 +25,6 @@ function pick_cell_type(num) {
 	if (num == 0) return "white";
 	return "black";
 }
-
-//function draw_blocks
 var blocks = [
 	[0,1,0,0,1,0,1,1,1,1],
 	[0,1,0,0,1,0,1,0,1,1],
@@ -43,16 +42,16 @@ var CANV_WIDTH = canv.getAttribute("width");
 var CANV_HEIGHT = canv.getAttribute("height");
 var ctx = canv.getContext("2d");
 var PIX_WIDTH = 50;
-//draw_grid(ctx, PIX_WIDTH, CANV_WIDTH, CANV_HEIGHT, "black");
-
-var i, j;
-for (i = 0; i < 10; i++) {
-	for (j= 0; j < 10; j++) {
-		var cell_type = pick_cell_type(blocks[i][j]);
-		draw_pixel(j, i, ctx, PIX_WIDTH, cell_type, blocks[i][j]);
+function draw_blocks() {
+	var i, j;
+	for (i = 0; i < 10; i++) {
+		for (j= 0; j < 10; j++) {
+			var cell_type = pick_cell_type(blocks[i][j]);
+			draw_pixel(j, i, ctx, PIX_WIDTH, cell_type, blocks[i][j]);
+		}
 	}
 }
-
+draw_blocks();
 $canv = $('#myCanvas');
 $canv.mousemove(function(e){
 	var canv_x = e.offsetX;
@@ -66,8 +65,7 @@ $canv.click(function(e) {
 	var canv_x = e.offsetX;
 	var canv_y = e.offsetY;
 	var block = [(Math.floor(canv_x /PIX_WIDTH)), (Math.floor(canv_y / PIX_WIDTH))];
-	alert(blocks[block[0]][block[1]]);
-	blocks[block[0]][block[1]] = 1;
-	alert(blocks[block[0]][block[1]]);
+	blocks[block[1]][block[0]] = 1;
+	draw_blocks();
 });
 
